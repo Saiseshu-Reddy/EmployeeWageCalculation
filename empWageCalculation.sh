@@ -30,14 +30,23 @@ function getWorkingHrs ()	#Function for employee working hours calculation
        echo $empHrs
 }
 
+function getEmpWage()	#Function to get employee wage
+{
+	empHrs=$1
+	echo $(($empHrs*$empRatePerHr))
+}
+
 while [[ $totalEmpHrs -le $maxHrsInMonth && $totalWorkingDays -le $workingDays ]]	#Employee max working hour limit condition
 do
         totalWorkingDays=$(($totalWorkingDays+1))
 	empHrs=$( getWorkingHrs $(($RANDOM%3)) )
 	totalEmpHrs=$(($totalEmpHrs+$empHrs))	#Employee total working hours
+	dailyWages[$totalWorkingDays]=$( getEmpWage $empHrs )	#Array to save the daily wages of the employee
 done
 
 totalSalary=$(($totalEmpHrs*$empRatePerHr))	#calculating wage from total working hours
 
 
 echo "Total Salary Of Employee Is : $totalSalary"
+
+echo "Daily Wages of Employee is: ${dailyWages[@]}"
