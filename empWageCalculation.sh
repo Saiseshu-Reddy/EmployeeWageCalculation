@@ -8,15 +8,12 @@ empRatePerHr=20
 workingDays=20
 maxHrsInMonth=100
 
-totalEmpHr=0
-totalWorkingDay=0
+totalEmpHrs=0
+totalWorkingDays=0
 
-while [[ $totalEmpHr -le $maxHrsInMonth && $totalWorkingDay -le $workingDays ]]	#Checks for the condition of monthly work hour limit
-do
-       totalWorkingDay=$(($totalWorkingDay+1))
-       empCheck=$(($RANDOM%3))
-
-	case $empCheck in
+function getWorkingHrs ()	#Function for employee working hours calculation
+{
+        case $1 in
                         $isFullTime)
                                         empHrs=8
                                 ;;
@@ -29,9 +26,18 @@ do
                                 ;;
 
                 esac
-        salary=$(($empHrs*$empRatePerHr))	#Wage for a single day
-	totalSalary=$(($totalSalary+$salary))	#wage for a month
+
+       echo $empHrs
+}
+
+while [[ $totalEmpHrs -le $maxHrsInMonth && $totalWorkingDays -le $workingDays ]]	#Employee max working hour limit condition
+do
+        totalWorkingDays=$(($totalWorkingDays+1))
+	empHrs=$( getWorkingHrs $(($RANDOM%3)) )
+	totalEmpHrs=$(($totalEmpHrs+$empHrs))	#Employee total working hours
 done
 
+totalSalary=$(($totalEmpHrs*$empRatePerHr))	#calculating wage from total working hours
 
-echo "Total Salary For Month Of Employee Is : $totalSalary"
+
+echo "Total Salary Of Employee Is : $totalSalary"
