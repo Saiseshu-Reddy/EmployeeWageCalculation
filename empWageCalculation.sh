@@ -1,26 +1,34 @@
 #!/bin/bash -x
 
 echo "Welcome to Employee Wage Calculation Program"
-echo -ne "\n1. Part Time \n2. Full Time \n3.Enter Empolyee Type : \n"
+
+ISPARTTIME=1
+ISFULLTIME=2
 WAGEPERHR=20
-FULLDAYHR=8
-PARTTIMEHR=4
+WORKINGDAYS=20
 
-#Random to generate whether the employee is part-time/ full-time/ absent
-var=$(($RANDOM%3))
-echo $var
+totalSalary=0
 
-case $var in	#Switch case to select the option
-	1)
-		dailyWage=$(($WAGEPERHR*$PARTTIMEHR))   #Calculates daily wage of part time employee if he is present
-	        echo "The Daily Wage of Part Time Employee is: $dailyWage"
-		;;
-	2)
-		dailyWage=$(($WAGEPERHR*$FULLDAYHR))    #Calculates daily wage of full time employee if he is present
-                echo "The Daily Wage of Full Time Employee is: $dailyWage"
-                ;;
-	*)
-		echo "Employee is absent"
-		;;
-esac
+for ((day=1;day<=WORKINGDAYS;day++))
+do
+        empcheck=$(($RANDOM%3)) #Using random to generate status of employee
 
+	case $empcheck in
+             	 $ISFULLTIME)
+                        empHrs=8
+                             ;;
+                 $ISPARTTIME)
+                        empHrs=4
+                             ;;
+
+                 *)
+                        empHrs=0
+                             ;;
+
+                esac
+        salary=$(($empHrs*$WAGEPERHR)) #calculates wage for single day
+ 	totalSalary=$(($totalSalary+$salary))	#Calculates wage for the whole month
+done
+
+
+echo "Total Salary For Month Of Employee Is : $totalSalary"
