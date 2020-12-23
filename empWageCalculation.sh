@@ -11,6 +11,8 @@ maxHrsInMonth=100
 totalEmpHrs=0
 totalWorkingDays=0
 
+declare -A dailyWages	#Declaring a dictionary to store daily wage
+
 function getWorkingHrs ()	#Function for employee working hours calculation
 {
         case $1 in
@@ -41,7 +43,7 @@ do
         totalWorkingDays=$(($totalWorkingDays+1))
 	empHrs=$( getWorkingHrs $(($RANDOM%3)) )
 	totalEmpHrs=$(($totalEmpHrs+$empHrs))	#Employee total working hours
-	dailyWages[$totalWorkingDays]=$( getEmpWage $empHrs )	#Array to save the daily wages of the employee
+	dailyWages["Day"$totalWorkingDays]=$( getEmpWage $empHrs )	#Dictionary to save the daily wages of the employee
 done
 
 totalSalary=$(($totalEmpHrs*$empRatePerHr))	#calculating wage from total working hours
@@ -49,4 +51,5 @@ totalSalary=$(($totalEmpHrs*$empRatePerHr))	#calculating wage from total working
 
 echo "Total Salary Of Employee Is : $totalSalary"
 
+echo "${!dailyWages[@]}"
 echo "Daily Wages of Employee is: ${dailyWages[@]}"
