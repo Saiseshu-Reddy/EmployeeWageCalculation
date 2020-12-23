@@ -2,32 +2,35 @@
 
 echo "Welcome to Employee Wage Calculation Program"
 
-ISPARTTIME=1
-ISFULLTIME=2
-WAGEPERHR=20
-WORKINGDAYS=20
+isPartTime=1
+isFullTime=2
+empRatePerHr=20
+workingDays=20
+maxHrsInMonth=100
 
-totalSalary=0
+totalEmpHr=0
+totalWorkingDay=0
 
-for ((day=1;day<=WORKINGDAYS;day++))
+while [[ $totalEmpHr -le $maxHrsInMonth && $totalWorkingDay -le $workingDays ]]	#Checks for the condition of monthly work hour limit
 do
-        empcheck=$(($RANDOM%3)) #Using random to generate status of employee
+       totalWorkingDay=$(($totalWorkingDay+1))
+       empCheck=$(($RANDOM%3))
 
-	case $empcheck in
-             	 $ISFULLTIME)
-                        empHrs=8
-                             ;;
-                 $ISPARTTIME)
-                        empHrs=4
-                             ;;
+	case $empCheck in
+                        $isFullTime)
+                                        empHrs=8
+                                ;;
+                        $isPartTime)
+                                        empHrs=4
+                                ;;
 
-                 *)
-                        empHrs=0
-                             ;;
+                         *)
+                                        empHrs=0
+                                ;;
 
                 esac
-        salary=$(($empHrs*$WAGEPERHR)) #calculates wage for single day
- 	totalSalary=$(($totalSalary+$salary))	#Calculates wage for the whole month
+        salary=$(($empHrs*$empRatePerHr))	#Wage for a single day
+	totalSalary=$(($totalSalary+$salary))	#wage for a month
 done
 
 
